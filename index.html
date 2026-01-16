@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dany Soares - Lash Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0B0B0F 0%, #1a1a2e 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 51, 153, 0.6), 0 0 40px rgba(255, 51, 153, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 51, 153, 0.8), 0 0 60px rgba(255, 51, 153, 0.4); }
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid #ff3399;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            animation: glow 3s infinite;
+        }
+
+        .profile-image-placeholder {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid #ff3399;
+            position: relative;
+            z-index: 2;
+            animation: glow 3s infinite;
+            background: linear-gradient(135deg, #ff3399, #cc00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #ff3399, #cc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-subtitle {
+            font-size: 14px;
+            color: #ff3399;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .profile-bio {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #d4d4d4;
+            font-weight: 300;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .link-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-decoration: none;
+            color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 51, 153, 0.1), rgba(204, 0, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 51, 153, 0.5), 0 0 60px rgba(255, 51, 153, 0.2);
+            border-color: rgba(255, 51, 153, 0.8);
+        }
+
+        .link-card:hover::before {
+            opacity: 1;
+        }
+
+        .link-card:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .link-icon {
+            font-size: 24px;
+            min-width: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-text {
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .primary-link {
+            background: linear-gradient(135deg, rgba(255, 51, 153, 0.2), rgba(204, 0, 255, 0.2));
+            border: 2px solid #ff3399;
+        }
+
+        .primary-link:hover {
+            box-shadow: 0 0 40px rgba(255, 51, 153, 0.7), 0 0 80px rgba(255, 51, 153, 0.3);
+        }
+
+        .social-section {
+            text-align: center;
+        }
+
+        .social-title {
+            font-size: 14px;
+            color: #d4d4d4;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(255, 51, 153, 0.6);
+            border-color: #ff3399;
+        }
+
+        .signature {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 51, 153, 0.15);
+            text-align: center;
+        }
+
+        .signature-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #888;
+            font-size: 13px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .signature-link:hover {
+            color: #ff3399;
+            background: rgba(255, 51, 153, 0.1);
+        }
+
+        .signature-icon {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .signature-link:hover .signature-icon {
+            transform: scale(1.2);
+        }
+
+        .signature-text strong {
+            color: #ff3399;
+            font-weight: 600;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #f5f5f5;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 51, 153, 0.1);
+            border-color: #ff3399;
+            transform: translateX(-4px);
+        }
+
+        /* Page Headers */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff3399, #cc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-description {
+            font-size: 14px;
+            color: #d4d4d4;
+            font-weight: 300;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 51, 153, 0.5);
+            border-color: #ff3399;
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            background: linear-gradient(135deg, rgba(255, 51, 153, 0.1), rgba(204, 0, 255, 0.1));
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Testimonials */
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .testimonial-image {
+            aspect-ratio: 3/4;
+            border-radius: 16px;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 51, 153, 0.5);
+            border-color: #ff3399;
+        }
+
+        .testimonial-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            background: linear-gradient(135deg, rgba(255, 51, 153, 0.1), rgba(204, 0, 255, 0.1));
+        }
+
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Services Table */
+        .services-table {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(255, 51, 153, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .service-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 51, 153, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .service-row:last-child {
+            border-bottom: none;
+        }
+
+        .service-row:hover {
+            background: rgba(255, 51, 153, 0.1);
+        }
+
+        .service-name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .service-price {
+            font-weight: 600;
+            color: #ff3399;
+            font-size: 16px;
+        }
+
+        .service-details {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .service-info {
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .profile-name {
+                font-size: 28px;
+            }
+
+            .link-card {
+                padding: 18px 20px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="profile-section">
+                <div class="profile-image-wrapper">
+                    <img src="assets/img/avatar.png" alt="Dany Soares - Lash Designer" class="profile-image">
+                    <!-- Se a imagem não carregar, remova esta linha e descomente a linha abaixo -->
+                    <!-- <div class="profile-image-placeholder">✨</div> -->
+                </div>
+                <h1 class="profile-name">Dany Soares</h1>
+                <p class="profile-subtitle">Lash Designer • Cílios & Sobrancelhas</p>
+                <p class="profile-bio">Realçando sua beleza com cílios perfeitos ✨<br>Especialista em Lash Designer & Sobrancelhas<br>Atendimento profissional e personalizado 💖</p>
+            </div>
+
+            <div class="links-container">
+                <a href="https://wa.me/5511995953397?text=Olá!%20Gostaria%20de%20agendar%20um%20horário" class="link-card primary-link">
+                    <span class="link-icon">💬</span>
+                    <span class="link-text">Agendar Horário</span>
+                </a>
+
+                <div class="link-card" onclick="showPage('gallery')">
+                    <span class="link-icon">📸</span>
+                    <span class="link-text">Galeria de Trabalhos</span>
+                </div>
+
+                <div class="link-card" onclick="showPage('services')">
+                    <span class="link-icon">💎</span>
+                    <span class="link-text">Serviços & Valores</span>
+                </div>
+
+                <div class="link-card" onclick="showPage('testimonials')">
+                    <span class="link-icon">⭐</span>
+                    <span class="link-text">Depoimentos de Clientes</span>
+                </div>
+
+                <a href="https://maps.app.goo.gl/nkc7t72snXfPmW8i7?g_st=ipc" class="link-card">
+                    <span class="link-icon">📍</span>
+                    <span class="link-text">Localização do Studio</span>
+                </a>
+            </div>
+
+            <div class="social-section">
+                <p class="social-title">Siga nas redes ✨</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/lashdanysoares" class="social-link"><!--
+tags: [logo, app, application, images, photos, videos, post, stories, online, community]
+category: Brand
+version: "1.9"
+unicode: "ec20"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+  <path d="M16.5 7.5v.01" />
+</svg></a>
+                    <a href="https://wa.me/5511995953397" class="social-link"><!--
+tags: [logo, app, application, communication, text, messages, communicator, photos, images, videos, giphy]
+category: Brand
+version: "1.13"
+unicode: "ec74"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+  <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
+</svg></a>
+                    <a href="https://www.threads.com/@lashdanysoares?xmt=AQF0MsFcwiGuVVYBejWminwgB5BV6veiOvgsXV4JsAH8zUU" class="social-link"><!--
+tags: [textile, discussion, conversation, needlework, clothing, forum, dialogue, social, sewing, fabric]
+category: Brand
+version: "2.25"
+unicode: "fb02"
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="#ffffff"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M19 7.5c-1.333 -3 -3.667 -4.5 -7 -4.5c-5 0 -8 2.5 -8 9s3.5 9 8 9s7 -3 7 -5s-1 -5 -7 -5c-2.5 0 -3 1.25 -3 2.5c0 1.5 1 2.5 2.5 2.5c2.5 0 3.5 -1.5 3.5 -5s-2 -4 -3 -4s-1.833 .333 -2.5 1" />
+</svg></a>
+                </div>
+            </div>
+
+            <div class="signature">
+                <a href="https://instagram.com/digitalseven777" class="signature-link" target="_blank">
+                    <span class="signature-icon">⚡</span>
+                    <span class="signature-text">Desenvolvido por <strong>@digitalseven777</strong></span>
+                </a>
+            </div>
+        </div>
+
+        <!-- GALLERY PAGE -->
+        <div id="gallery" class="page">
+            <button class="back-button" onclick="showPage('home')">
+                <span>← Voltar</span>
+            </button>
+
+            <div class="page-header">
+                <h2 class="page-title">Galeria de Trabalhos</h2>
+                <p class="page-description">Confira alguns dos nossos trabalhos realizados</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-1.jpg" alt="Trabalho 1"> -->
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-2.jpg" alt="Trabalho 2"> -->
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-3.jpg" alt="Trabalho 3"> -->
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-4.jpg" alt="Trabalho 4"> -->
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-5.jpg" alt="Trabalho 5"> -->
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">📸</div>
+                    <!-- Substitua por: <img src="sua-foto-6.jpg" alt="Trabalho 6"> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TESTIMONIALS PAGE -->
+        <div id="testimonials" class="page">
+            <button class="back-button" onclick="showPage('home')">
+                <span>← Voltar</span>
+            </button>
+
+            <div class="page-header">
+                <h2 class="page-title">Depoimentos</h2>
+                <p class="page-description">O que nossas clientes dizem</p>
+            </div>
+
+            <div class="testimonials-container">
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-1.jpg" alt="Depoimento 1"> -->
+                </div>
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-2.jpg" alt="Depoimento 2"> -->
+                </div>
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-3.jpg" alt="Depoimento 3"> -->
+                </div>
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-4.jpg" alt="Depoimento 4"> -->
+                </div>
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-5.jpg" alt="Depoimento 5"> -->
+                </div>
+                <div class="testimonial-image">
+                    <div class="testimonial-placeholder">💬</div>
+                    <!-- Substitua por: <img src="print-feedback-6.jpg" alt="Depoimento 6"> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICES PAGE -->
+        <div id="services" class="page">
+            <button class="back-button" onclick="showPage('home')">
+                <span>← Voltar</span>
+            </button>
+
+            <div class="page-header">
+                <h2 class="page-title">Serviços & Valores</h2>
+                <p class="page-description">Confira nossos serviços e preços</p>
+            </div>
+
+            <div class="services-table">
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Extensão de Cílios Fio a Fio</div>
+                        <div class="service-details">Volume natural • Duração: 2-3 semanas</div>
+                    </div>
+                    <div class="service-price">R$ 180</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Volume Brasileiro</div>
+                        <div class="service-details">Volume médio • Duração: 2-3 semanas</div>
+                    </div>
+                    <div class="service-price">R$ 220</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Volume Russo</div>
+                        <div class="service-details">Volume dramático • Duração: 3-4 semanas</div>
+                    </div>
+                    <div class="service-price">R$ 280</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Mega Volume</div>
+                        <div class="service-details">Máximo volume • Duração: 3-4 semanas</div>
+                    </div>
+                    <div class="service-price">R$ 350</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Manutenção (até 15 dias)</div>
+                        <div class="service-details">Preenchimento e ajustes</div>
+                    </div>
+                    <div class="service-price">R$ 90</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Remoção Completa</div>
+                        <div class="service-details">Remoção segura e profissional</div>
+                    </div>
+                    <div class="service-price">R$ 50</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Design de Sobrancelhas</div>
+                        <div class="service-details">Modelagem + Henna</div>
+                    </div>
+                    <div class="service-price">R$ 80</div>
+                </div>
+
+                <div class="service-row">
+                    <div class="service-info">
+                        <div class="service-name">Lifting de Cílios</div>
+                        <div class="service-details">Curvatura natural + Tintura</div>
+                    </div>
+                    <div class="service-price">R$ 120</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
